@@ -4,9 +4,10 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         char[][] board = new char[3][3];
-        String value = "         ";
+        String value = "_________";
         int counter = 2;
         boolean shouldContinue = true;
+
 
         printFirstBoard(board, value);
 
@@ -18,8 +19,8 @@ public class Main {
                 checkingWinner(board, counter);
             } else shouldContinue = false;
         }
-    }
 
+    }
 
     public static void printBoard(char[][] board) {
         System.out.println("---------");
@@ -34,6 +35,16 @@ public class Main {
     }
 
     public static void printFirstBoard(char[][] board, String value) {
+        System.out.println("Hello!");
+        System.out.println("In front of you is a game of circles and crosses.");
+        System.out.println("Press the appropriately assigned number from 1 to 9 into the box where you want to insert an X.");
+        System.out.println("Then the computer makes the move, and so on and so forth! Enjoy the game!");
+        System.out.println();
+        System.out.println("---------");
+        System.out.println("|" + " 1 2 3 " + "|");
+        System.out.println("|" + " 4 5 6 " + "|");
+        System.out.println("|" + " 7 8 9 " + "|");
+        System.out.println("---------");
 
         int counter = 0;
 
@@ -44,46 +55,114 @@ public class Main {
             }
         }
 
-        System.out.println("---------");
-        System.out.println("|" + " " + value.charAt(0) + " " + value.charAt(1) + " " + value.charAt(2) + " " + "|");
-        System.out.println("|" + " " + value.charAt(3) + " " + value.charAt(4) + " " + value.charAt(5) + " " + "|");
-        System.out.println("|" + " " + value.charAt(6) + " " + value.charAt(7) + " " + value.charAt(8) + " " + "|");
-        System.out.println("---------");
     }
 
     public static void checkingForErrors(Scanner scanner, char[][] board, int counter) {
-        int coordinate1;
-        int coordinate2;
-        String[] coordinatesArray;
-        String pattern = "[0-9]";
+
+        int coordinate;
+        String pattern = "[1-9]";
         boolean loop = true;
         char user;
+        String coordinatesString;
 
-        if (counter % 2 == 0) {
-            user = 'X';
-        } else user = 'O';
+
 
         do {
-            String coordinatesString = scanner.nextLine();
-            coordinatesArray = coordinatesString.split(" ");
-
-
-            if (!coordinatesArray[0].matches(pattern) || !coordinatesArray[1].matches(pattern)) {
-                System.out.println("You should enter numbers!");
+            if (counter % 2 == 0) {
+                System.out.println("YOUR MOVE!");
+                coordinatesString = scanner.nextLine();
+                user = 'X';
             } else {
-                coordinate1 = Integer.parseInt(coordinatesArray[0]);
-                coordinate2 = Integer.parseInt(coordinatesArray[1]);
-                if (coordinate1 < 1 || coordinate1 > 3 || coordinate2 > 3 || coordinate2 < 1) {
-                    System.out.println("Coordinates should be from 1 to 3!");
-                } else if (board[coordinate1 - 1][coordinate2 - 1] != ' ') {
-                    System.out.println("This cell is occupied! Choose another one!");
-                } else {
-                    board[coordinate1 - 1][coordinate2 - 1] = user;
-                    loop = false;
+                System.out.println("PC MOVE!");
+                Random random = new Random();
+                int number = random.nextInt(1,9);
+                coordinatesString = String.valueOf(number);
+                user = 'O';
+            }
+
+            if (!coordinatesString.matches(pattern)) {
+                System.out.println("You should enter numbers from 1 to 9!");
+            } else {
+                coordinate = Integer.parseInt(coordinatesString);
+                switch (coordinate) {
+                    case 1 -> {
+                        if (board[0][0] != '_') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            board[0][0] = user;
+                            loop = false;
+                        }
+                    }
+                    case 2 -> {
+                        if (board[0][1] != '_') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            board[0][1] = user;
+                            loop = false;
+                        }
+                    }
+                    case 3 -> {
+                        if (board[0][2] != '_') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            board[0][2] = user;
+                            loop = false;
+                        }
+                    }
+                    case 4 -> {
+                        if (board[1][0] != '_') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            board[1][0] = user;
+                            loop = false;
+                        }
+                    }
+                    case 5 -> {
+                        if (board[1][1] != '_') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            board[1][1] = user;
+                            loop = false;
+                        }
+                    }
+                    case 6 -> {
+                        if (board[1][2] != '_') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            board[1][2] = user;
+                            loop = false;
+                        }
+                    }
+                    case 7 -> {
+                        if (board[2][0] != '_') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            board[2][0] = user;
+                            loop = false;
+                        }
+                    }
+                    case 8 -> {
+                        if (board[2][1] != '_') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            board[2][1] = user;
+                            loop = false;
+                        }
+                    }
+                    case 9 -> {
+                        if (board[2][2] != '_') {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            board[2][2] = user;
+                            loop = false;
+                        }
+                    }
                 }
             }
         } while (loop);
+
     }
+
 
     public static boolean checkingWinner(char[][] board, int counter) {
 
@@ -114,15 +193,15 @@ public class Main {
             System.out.println(board[0][2] + " wins");
             shouldContinue = false;
 
-        } else if (board[0][0] == board [1][1] && board[1][1] == board[2][2] && (board[1][1] == 'X' || board[1][1] == 'O')) {
-            System.out.println(board[1][1] + " wins");
-            shouldContinue =false;
-
-        }else if (board[0][2] == board [1][1] && board[1][1] == board[2][0] && (board[1][1] == 'X' || board[1][1] == 'O')){
+        } else if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && (board[1][1] == 'X' || board[1][1] == 'O')) {
             System.out.println(board[1][1] + " wins");
             shouldContinue = false;
 
-        }else if (counter == 11){
+        } else if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && (board[1][1] == 'X' || board[1][1] == 'O')) {
+            System.out.println(board[1][1] + " wins");
+            shouldContinue = false;
+
+        } else if (counter == 11) {
             System.out.println("Draw");
             shouldContinue = false;
         }
