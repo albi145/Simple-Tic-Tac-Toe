@@ -1,7 +1,9 @@
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        ArrayList<Integer> intList = new ArrayList<>();
+        ArrayList<Integer> arrayList = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         char[][] board = new char[3][3];
         String value = "_________";
@@ -12,12 +14,13 @@ public class Main {
         printFirstBoard(board, value);
 
         while (shouldContinue) {
-            checkingForErrors(scanner, board, counter);
+            checkingForErrors(scanner, board, counter, intList, arrayList);
             printBoard(board);
             counter++;
             if (checkingWinner(board, counter) == true) {
                 checkingWinner(board, counter);
             } else shouldContinue = false;
+
         }
 
     }
@@ -36,7 +39,7 @@ public class Main {
 
     public static void printFirstBoard(char[][] board, String value) {
         System.out.println("Hello!");
-        System.out.println("In front of you is a game of circles and crosses.");
+        System.out.println("In front of you is a Tic-Tac-Toe Game!");
         System.out.println("Press the appropriately assigned number from 1 to 9 into the box where you want to insert an X.");
         System.out.println("Then the computer makes the move, and so on and so forth! Enjoy the game!");
         System.out.println();
@@ -57,33 +60,43 @@ public class Main {
 
     }
 
-    public static void checkingForErrors(Scanner scanner, char[][] board, int counter) {
+    public static void checkingForErrors(Scanner scanner, char[][] board, int counter, ArrayList<Integer> intList, ArrayList<Integer> arrayList) {
 
         int coordinate;
-        String pattern = "[1-9]";
         boolean loop = true;
+        boolean shouldContinue = true;
+
         char user;
-        String coordinatesString;
+        for (int i = 1; i < 10; i++) {
+            intList.add(i);
+        }
 
-
+        Random random = new Random();
 
         do {
-            if (counter % 2 == 0) {
-                System.out.println("YOUR MOVE!");
-                coordinatesString = scanner.nextLine();
-                user = 'X';
-            } else {
-                System.out.println("PC MOVE!");
-                Random random = new Random();
-                int number = random.nextInt(1,9);
-                coordinatesString = String.valueOf(number);
-                user = 'O';
-            }
+            try {
+                if (counter % 2 == 0) {
+                    user = 'X';
 
-            if (!coordinatesString.matches(pattern)) {
-                System.out.println("You should enter numbers from 1 to 9!");
-            } else {
-                coordinate = Integer.parseInt(coordinatesString);
+                    System.out.println("YOUR MOVE!");
+                    coordinate = scanner.nextInt();
+                    arrayList.add(coordinate);
+                } else {
+                    Thread.sleep(1000);
+                    user = 'O';
+                    do {
+                        int index = random.nextInt(0, 9) + 1;
+                        coordinate = index;
+                        if (!arrayList.contains(coordinate)) {
+                            System.out.println("PC MOVE!");
+                            arrayList.add(index);
+                            shouldContinue = false;
+                        }
+                    } while (shouldContinue);
+                }
+                if (!intList.contains(coordinate)){
+                    System.out.println("You should enter numbers from 1 to 9!");
+                }else
                 switch (coordinate) {
                     case 1 -> {
                         if (board[0][0] != '_') {
@@ -158,9 +171,11 @@ public class Main {
                         }
                     }
                 }
+            } catch (Exception e) {
+                System.out.println("You should enter NUMBERS");
+                scanner.nextLine();
             }
         } while (loop);
-
     }
 
 
